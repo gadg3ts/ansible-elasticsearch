@@ -1,0 +1,89 @@
+---
+- hosts: elasticsearch
+  tasks:
+#      - name: add python-pycurl
+#        apt: name=python-pycurl state=installed
+#      - name: add_elasticsearch_repo
+#        apt_repository: repo="deb https://packages.elastic.co/elasticsearch/2.x/debian stable main" state=present
+#      - name: add_key
+#        apt_key: url=https://packages.elastic.co/GPG-KEY-elasticsearch validate_certs=no
+#      - name: install_elasticsearch
+#        apt: name=elasticsearch state=installed update_cache=yes
+#        with_items:
+#          - elasticsearch-2.4.0
+#      - name: Install snmpd
+#        apt: name=snmpd state=installed
+#      - name: Install add-apt-repostory
+#        become: yes
+#        apt: name=software-properties-common state=latest
+#
+#      - name: Add Oracle Java Repository
+#        become: yes
+#        apt_repository: repo='ppa:webupd8team/java'
+#
+#      - name: Accept Java 8 License
+#        become: yes
+#        debconf: name='oracle-java8-installer' question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
+#
+#      - name: Install Oracle Java 8
+#        become: yes
+#        apt: name={{item}} state=latest
+#        with_items:
+#          - oracle-java8-installer
+#          - ca-certificates
+#          - oracle-java8-set-default
+#
+#      - name: copy snmpd config
+#        copy: src=files/snmpd.conf dest=/etc/snmp/snmpd.conf mode=0600
+#      - name: copy sockets scrupt for snmp
+#        copy: src=files/sockets_pipes_files_client.sh dest=/usr/local/bin/sockets_pipes_files_client.sh mode=0755
+#      - name: copy elasticsearch config
+#        copy: src=files/elasticsearch.yml dest=/etc/elasticsearch/elasticsearch.yml mode=0760
+#        copy: src=files/logging.yml dest=/etc/elasticsearch/logging.yml mode=0760
+#        copy: src=files/elasticsearch dest=/etc/default/elasticsearch mode=0644
+
+      - name: add elasticsearch plugins
+#        command: /usr/share/elasticsearch/bin/plugin install license
+#        command: /usr/share/elasticsearch/bin/plugin install shield
+#        command: /usr/share/elasticsearch/bin/plugin install marvel-agent
+        elasticsearch_plugin: state=present name="elasticsearch/license" plugin_bin=/usr/share/elasticsearch/bin/plugin
+#         elasticsearch_plugin: state=present name="elasticsearch/marvel" plugin_bin="/usr/share/elasticsearch/bin/plugin"
+      - name: add elasticsearch shield users
+        command: /usr/share/elasticsearch/bin/shield/esusers useradd notadefaultusername -p aez3XaS7 -r admin
+        command: /usr/share/elasticsearch/bin/shield/esusers useradd es_admin -p aez3XaS7 -r admin 
+        command: /usr/share/elasticsearch/bin/shield/esusers useradd marvel -p OofohGh2 -r marvel_user
+
+
+# need to add license over http
+# 1057   curl -XPUT -u notadefaultusername:aez3XaS7 'http://elasticsearch01:9200/_license' -d @it-licensing-c07150f3-ea83-44be-aca8-c13acf17a123.json
+#      1062   curl -XPUT -u notadefaultusername:aez3XaS7 'http://elasticsearch01:9200/_license?acknowledge=true' -d @it-licensing-c07150f3-ea83-44be-aca8-c13acf17a123.json
+
+#     - name: add kiosk user
+#       user: name=kiosk password="$6$IWcn6EdFog$C5dL5OiCISBzFUTUJ5Nbn.JeWZgQlliK4a55v.x3F63wSoDvexha58Uvlq9.caEDrxaAnIUSj1DyB7Q4Aauoe/" home=/home/kiosk
+#     - name: change root password
+#       user: name=root password="$6$IWcn6EdFog$C5dL5OiCISBzFUTUJ5Nbn.JeWZgQlliK4a55v.x3F63wSoDvexha58Uvlq9.caEDrxaAnIUSj1DyB7Q4Aauoe/"
+#     - name: add scripts 
+#       copy: src=/home/ajanzade/ansibleplay/scripts/kiosk.sh dest=/opt/kiosk.sh mode=0755
+#     - name: kiosk.conf
+#       copy: src=/home/ajanzade/ansibleplay/scripts/kiosk.conf dest=/etc/init/kiosk.conf mode=0644
+#     - name: create config folder  
+#       file: path=/home/kiosk/.config state=directory owner=kiosk group=kiosk mode=0744
+#     - name: openbox folder
+#       file: path=/home/kiosk/.config/openbox state=directory  owner=kiosk group=kiosk mode=0744
+#     - name: copy the config
+#       copy: src=/home/ajanzade/ansibleplay/scripts/rc.xml dest=/home/kiosk/.config/openbox/rc.xml owner=kiosk group=kiosk  mode=0744
+#     - name:  set monitor
+#       copy: src=/home/ajanzade/ansibleplay/scripts/autostart.sh dest=/home/kiosk/.config/openbox/autostart.sh owner=kiosk group=kiosk  mode=0744
+#     - name:  configure X11-common
+#       shell: /bin/sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapper.config
+#     - name: allowd user
+#       shell: >
+#          /usr/bin/debconf-set-selections  <<EOF 
+#          x11-common  x11-common/xwrapper/allowed_users         select  Anybody  
+#          x11-common  x11-common/xwrapper/actual_allowed_users  string  anybody
+#          EOF
+#     - name: override lightdm
+#       copy: src=/home/ajanzade/ansibleplay/scripts/lightdm.override  dest=/etc/init/lightdm.override owner=root group=root  mode=0644
+
+
+

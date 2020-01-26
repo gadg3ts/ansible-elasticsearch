@@ -1,0 +1,3 @@
+auth.basic.http.enabled: true
+auth.basic.username: notadefaultusername
+auth.basic.password: aez3XaS7

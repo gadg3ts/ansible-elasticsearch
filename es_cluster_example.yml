@@ -1,0 +1,44 @@
+- hosts: elasticsearch01
+  roles:
+    - role: elastic.elasticsearch
+  vars:
+    es_heap_size: "1g"
+    es_config:
+      cluster.name: "elasticsearch-cluster"
+      cluster.initial_master_nodes: [ "elasticsearch01", "elasticsearch02" , "elasticsearch03" ]
+      network.host: "0.0.0.0"
+      discovery.zen.ping.unicast.hosts: [ "elasticsearch01", "elasticsearch02" , "elasticsearch03" ]
+      http.port: 9200
+      bootstrap.memory_lock: false
+    es_plugins:
+     - plugin: ingest-attachment
+    es_java_opts: "-Duser.timezone='Europe/London' -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=8111 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=`hostname` -Dcom.sun.management.snmp.port=9999 -Dcom.sun.management.snmp.acl=false" 
+- hosts: elasticsearch02
+  roles:
+    - role: elastic.elasticsearch
+  vars:
+    es_heap_size: "1g"
+    es_config:
+      cluster.name: "elasticsearch-cluster"
+      cluster.initial_master_nodes: [ "elasticsearch01", "elasticsearch02" , "elasticsearch03" ]
+      network.host: "0.0.0.0"
+      discovery.zen.ping.unicast.hosts: [ "elasticsearch01", "elasticsearch02" , "elasticsearch03" ]
+      http.port: 9200
+      bootstrap.memory_lock: false
+    es_plugins:
+      - plugin: ingest-attachment
+
+- hosts: elasticsearch03
+  roles:
+    - role: elastic.elasticsearch
+  vars:
+    es_heap_size: "1g"
+    es_config:
+      cluster.name: "elasticsearch-cluster"
+      cluster.initial_master_nodes: [ "elasticsearch01", "elasticsearch02" , "elasticsearch03" ]
+      network.host: "0.0.0.0"
+      discovery.zen.ping.unicast.hosts: [ "elasticsearch01", "elasticsearch02" , "elasticsearch03" ]
+      http.port: 9200
+      bootstrap.memory_lock: false
+    es_plugins:
+      - plugin: ingest-attachment
